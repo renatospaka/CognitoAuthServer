@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon src/server.js",
+    "debug": "nodemon --inspect src/server.js"
   },
   "keywords": [
     "Cognito",
@@ -15,14 +16,7 @@
   "author": "Renato Spakauskas",
   "license": "ISC",
   "dependencies": {
-    "amazon-cognito-identity-js": "^4.4.0",
-    "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "jwk-to-pem": "^2.0.4",
-    "node-fetch": "^2.6.1",
-    "request": "^2.88.2"
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.5"

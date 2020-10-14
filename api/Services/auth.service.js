@@ -1,8 +1,8 @@
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-require('dotenv').config();
 
 global.fetch = require('node-fetch');
 global.navigator = () => null;
+require('dotenv').config();
 
 const poolData = {
   UserPoolId: process.env.COGNITO_USER_POOL_ID,
@@ -11,7 +11,7 @@ const poolData = {
 
 const pool_region = process.env.COGNITO_POOL_REGION;
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-exports.Register = function (body, callback) {
+exports.signUp = function (body, callback) {
   const name = body.name;
   const email = body.email;
   const password = body.password;
@@ -27,7 +27,7 @@ exports.Register = function (body, callback) {
 };
 
 
-exports.Login = function (body, callback) {
+exports.logIn = function (body, callback) {
   const userName = body.name;
   const password = body.password;
   
@@ -52,46 +52,48 @@ exports.Login = function (body, callback) {
   })
 };
 
-exports.Validate = function(token, callback){
-  request({url : `https://cognitoidp.${pool_region}.amazonaws.com/${poolData.UserPoolId}/.well-known/jwks.json`,json : true}, function(error, response, body){
-    if (!error && response.statusCode === 200) {
-      pems = {};
-      const keys = body['keys'];
-      for(let i = 0; i < keys.length; i++) {
-        const key_id = keys[i].kid;
-        const modulus = keys[i].n;
-        const exponent = keys[i].e;
-        const key_type = keys[i].kty;
-        const jwk = { kty: key_type, n: modulus, e: exponent};
-        const pem = jwkToPem(jwk);
-        pems[key_id] = pem;
-      }
-      
-      const decodedJwt = jwt.decode(token, {complete: true});
-      if (!decodedJwt) {
-        console.log("Not a valid JWT token");
-        callback(new Error('Not a valid JWT token'));
-      }
-      
-      const kid = decodedJwt.header.kid;
-      const pem = pems[kid];
-      if (!pem) {
-        console.log('Invalid token');
-        callback(new Error('Invalid token'));
-      }
-      
-      jwt.verify(token, pem, function(err, payload) {
-        if(err) {
-          console.log("Invalid Token.");
-          callback(new Error('Invalid token'));
-        } else {
-          console.log("Valid Token.");
-          callback(null, "Valid token");
+exports.Validate = function(token, callback) {
+  request({ url: `https://cognito-idp.${pool_region}.amazonaws.com/${poolData.UserPoolId}/.well-known/jwks.json`,
+    json: true }, 
+    function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        pems = {};
+        const keys = body['keys'];
+        for(let i = 0; i < keys.length; i++) {
+          const key_id = keys[i].kid;
+          const modulus = keys[i].n;
+          const exponent = keys[i].e;
+          const key_type = keys[i].kty;
+          const jwk = { kty: key_type, n: modulus, e: exponent};
+          const pem = jwkToPem(jwk);
+          pems[key_id] = pem;
         }
-      });
-    } else {
-      console.log("Error! Unable to download JWKs");
-      callback(error);
+    
+        const decodedJwt = jwt.decode(token, {complete: true});
+        if (!decodedJwt) {
+          console.log("Not a valid JWT token");
+          callback(new Error('Not a valid JWT token'));
+        }
+    
+        const kid = decodedJwt.header.kid;
+        const pem = pems[kid];
+        if (!pem) {
+          console.log('Invalid token');
+          callback(new Error('Invalid token'));
+        }
+    
+        jwt.verify(token, pem, function(err, payload) {
+          if(err) {
+            console.log("Invalid Token.");
+            callback(new Error('Invalid token'));
+          } else {
+            console.log("Valid Token.");
+            callback(null, "Valid token");
+          }
+        });
+      } else {
+        console.log("Error! Unable to download JWKs");
+        callback(error);
       }
   });
 }

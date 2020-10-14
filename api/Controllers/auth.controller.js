@@ -1,7 +1,7 @@
 const authService = require('../Services/auth.service');
 
-exports.register = function(req, res){
-  let register = authService.Register(req.body, 
+exports.signUp = function(req, res){
+  let register = authService.signUp(req.body, 
     function(err, result){
       if(err)
         res.send(err);
@@ -9,8 +9,8 @@ exports.register = function(req, res){
     });
 };
 
-exports.login = function(req, res) {
-  let login = authService.Login(req.body, 
+exports.logIn = function(req, res) {
+  let login = authService.logIn(req.body, 
     function(err, result){
       if(err)
         res.send(err)
