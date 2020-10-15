@@ -18,10 +18,15 @@
   "author": "Renato Spakauskas",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.771.0",
     "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-validator": "^6.6.1"
+    "express-validator": "^6.6.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.4",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",

@@ -1,3 +1,4 @@
+import e from 'express'
 import express, { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
@@ -23,6 +24,24 @@ class AuthController {
     if (!result.isEmpty()) {
       return res.status(422).json({ errors: result.array() })
     }
+
+    const { username, password, email, name, family_name, birthdate } = req.body
+    let userAttr = []
+    userAttr.push({ Name: 'email', Value: email })
+    userAttr.push({ Name: 'name', Value: name })
+    userAttr.push({ Name: 'family_name', Value: family_name })
+    userAttr.push({ Name: 'birthdate', Value: birthdate })
+
+    const cognito = new CognitoService()
+    cognito.signUpUser(username, password, userAttr)
+      .then(success => {
+        if (success) {
+          res.status(200).end()
+        } else {
+          res.status(500).end()
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   signIn(req: Request, res: Response) {
@@ -31,6 +50,18 @@ class AuthController {
     if (!result.isEmpty()) {
       return res.status(422).json({ errors: result.array() })
     }
+
+    const { username, password } = req.body
+    const cognito = new CognitoService()
+    cognito.signInUser(username, password)
+      .then(success => {
+        if (success) {
+          res.status(200).end()
+        } else {
+          res.status(500).end()
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   verify(req: Request, res: Response) {
@@ -39,6 +70,18 @@ class AuthController {
     if (!result.isEmpty()) {
       return res.status(422).json({ errors: result.array() })
     }
+
+    const { username, code } = req.body
+    const cognito = new CognitoService()
+    cognito.verifyAccount(username, code)
+      .then(success => {
+        if (success) {
+          res.status(200).end()
+        } else {
+          res.status(500).end()
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   private validateBody(type: String) {
