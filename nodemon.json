@@ -1,5 +1,8 @@
 {
   "execMap": {
     "js": "nodemon --inspect src/server.js"
-  }
+  },
+  "watch": ["src"],
+  "ext": "ts",
+  "exec": "ts-node ./src/server.ts"
 }
