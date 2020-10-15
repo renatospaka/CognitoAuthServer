@@ -1,6 +1,6 @@
-import * as bodyParser from 'body-parser';
-import App from './app';
-import HomeController from "./Controllers/home.controller";
+import * as bodyParser from 'body-parser'
+import App from './app'
+import HomeController from "./Controllers/home.controller"
 
 const app = new App({
   port: 3033,
@@ -13,4 +13,4 @@ const app = new App({
   ]
 })
 
-app.listen();
+app.listen()

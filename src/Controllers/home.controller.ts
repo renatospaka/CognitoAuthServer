@@ -1,15 +1,15 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response } from 'express'
 
 class HomeController {
-  public path = '/';
-  public router = express.Router();
+  public path = '/'
+  public router = express.Router()
 
   constructor() {
     this.initRoutes()
   }
 
   private initRoutes() {
-    this.router.get('/');
+    this.router.get('/')
   }
 
   home(req: Request, res: Response) {
@@ -17,4 +17,4 @@ class HomeController {
   }
 }
 
-export default HomeController;
+export default HomeController
