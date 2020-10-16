@@ -23,7 +23,6 @@ class CognitoService {
       SecretHash: this.generateHash(username),
       UserAttributes: userAttr
     }
-
     try {
       const data = await this.cognitoIdentity.signUp(params).promise()
       //console.log('Deu certo!', data)
@@ -41,7 +40,6 @@ class CognitoService {
       Username: username,
       SecretHash: this.generateHash(username)
     }
-
     try {
       const data = await this.cognitoIdentity.confirmSignUp(params).promise()
       //console.log('Deu certo!', data)
@@ -62,7 +60,6 @@ class CognitoService {
         'SECRET_HASH': this.generateHash(username)
       }
     }
-
     try {
       let data = await this.cognitoIdentity.initiateAuth(params).promise()
       console.log('Deu certo!', data)
@@ -70,6 +67,40 @@ class CognitoService {
     } catch(error) {
       console.log('Deu bosta...', error)
       return false
+    }
+  }
+
+  public async forgotPassword(username: string): Promise<boolean> {
+    const params = {
+      ClientId: this.clientId,  /* required */
+      Username: username,       /* required */
+      SecretHash: this.generateHash(username),
+    }
+    try {
+      const data = await this.cognitoIdentity.forgotPassword(params).promise();
+      console.log('Deu certo!', data)
+      return true
+    } catch (error) {
+      console.log('Deu bosta...', error)
+      return false;
+    }
+  }
+
+  public async confirmNewPassword(username: string, password: string, code: string): Promise<boolean> {
+    var params = {
+      ClientId: this.clientId,  /* required */
+      ConfirmationCode: code,   /* required */
+      Password: password,       /* required */
+      Username: username,       /* required */
+      SecretHash: this.generateHash(username),
+    };
+    try {
+      const data = await this. cognitoIdentity.confirmForgotPassword(params).promise();
+      console.log('Deu certo!', data)
+      return true;
+    } catch (error) {
+      console.log('Deu bosta...', error)
+      return false;
     }
   }
 
