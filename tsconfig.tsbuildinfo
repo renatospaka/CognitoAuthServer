@@ -1987,13 +1987,13 @@
         "affectsGlobalScope": false
       },
       "./src/Services/cognito.service.ts": {
-        "version": "2ba59b64f5a687a545ab9923fd5fc95bbc673fbc4bb48ec9f0f9008efaa7ac22",
-        "signature": "380f3dcd5de15d6cc6c4dc50db7c8155f22bdcc467b77785060e6af752d2cdd5",
+        "version": "53e9bb6b3f8ad6f4bbd6be602394427f17ba56ff9b84602efc724a9e40a5b1fe",
+        "signature": "10966e6a06d0c2830f25ae7d6fc634450db888f6618d43ae72b8195f7b92b071",
         "affectsGlobalScope": false
       },
       "./src/Controllers/auth.controller.ts": {
-        "version": "61d485e4ccd714f812219b702f4ed614763c36af82750b57b9d022d34db3db93",
-        "signature": "453f9941e4dbe57aaf6001b4d6c59e8c3a0ed80bdf475c83e1bfc2959cc78507",
+        "version": "c1353f0ba5377b2cd711922bec0e7de7a7ecc19d68ca1ca8f48bbd59eec5c6c7",
+        "signature": "261cc69050ea5ff0c18bb8b05e6a593932e7874609b39490cc3e09045d7c3ca7",
         "affectsGlobalScope": false
       },
       "./src/Middleware/auth.middleware.ts": {
