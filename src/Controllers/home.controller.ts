@@ -9,11 +9,12 @@ class HomeController {
   }
 
   private initRoutes() {
-    this.router.get('/')
+    this.router.get('/', this.home)
   }
 
   home(req: Request, res: Response) {
-    res.send('success!');
+    //res.send(`Cognito Auth Server has started on port ${this.port}`);
+    res.send('Cognito Auth Server has started successfuly.');
   }
 }
 

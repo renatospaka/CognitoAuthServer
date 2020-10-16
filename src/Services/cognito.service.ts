@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk'
-import { Bool } from 'aws-sdk/clients/clouddirectory'
 import crypto from 'crypto'
 
 require('dotenv').config()
@@ -8,8 +7,8 @@ class CognitoService {
   private config = {
     region: process.env.COGNITO_POOL_REGION
   }
-  private secretHash: string =  process.env.COGNITO_CLIENT_APP_ID
-  private clientId: string =  process.env.COGNITO_CLIENT_APP_ID
+  private secretHash: string =  process.env.COGNITO_APP_CLIENT_SECRET_HASH
+  private clientId: string =  process.env.COGNITO_APP_CLIENT_ID
 
   private cognitoIdentity;
   constructor() {
@@ -21,14 +20,16 @@ class CognitoService {
       ClientId: this.clientId,
       Password: password,
       Username: username,
-      SecretHash: this.generateHash(this.secretHash),
-      UserAttributes: username
+      SecretHash: this.generateHash(username),
+      UserAttributes: userAttr
     }
 
     try {
       const data = await this.cognitoIdentity.signUp(params).promise()
+      //console.log('Deu certo!', data)
       return true
     } catch(error) {
+      //console.log('Deu bosta...', error)
       return false
     }
   }
@@ -36,15 +37,17 @@ class CognitoService {
   public async verifyAccount(username: string, code: string): Promise<boolean> {
     const params = {
       ClientId: this.clientId,
-      confirmationPassword: code,
+      ConfirmationCode: code,
       Username: username,
-      SecretHash: this.generateHash(this.secretHash)
+      SecretHash: this.generateHash(username)
     }
 
     try {
       const data = await this.cognitoIdentity.confirmSignUp(params).promise()
+      //console.log('Deu certo!', data)
       return true
     } catch(error) {
+      //console.log('Deu bosta...', error)
       return false
     }
   }
@@ -54,23 +57,25 @@ class CognitoService {
       AuthFlow: 'USER_PASSWORD_AUTH',
       ClientId: this.clientId,
       AuthParameters: {
-        'USER_NAME': username,
+        'USERNAME': username,
         'PASSWORD': password,
-        'SECRET_HASH': this.generateHash(this.secretHash)
+        'SECRET_HASH': this.generateHash(username)
       }
     }
 
     try {
       let data = await this.cognitoIdentity.initiateAuth(params).promise()
+      console.log('Deu certo!', data)
       return true
     } catch(error) {
+      console.log('Deu bosta...', error)
       return false
     }
   }
 
-  private generateHash(key: string): string {
+  private generateHash(username: string): string {
     return crypto.createHmac('SHA256', this.secretHash)
-      .update(key + this.clientId)
+      .update(username + this.clientId)
       .digest('base64')
   }
 }

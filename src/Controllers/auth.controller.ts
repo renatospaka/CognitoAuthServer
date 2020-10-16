@@ -1,11 +1,10 @@
-import e from 'express'
 import express, { Request, Response } from 'express'
 import { body, validationResult } from 'express-validator'
 
 import CognitoService from '../Services/cognito.service'
 
 class AuthController {
-  public path = '/'
+  public path = '/auth'
   public router = express.Router()
 
   constructor() {
@@ -20,7 +19,7 @@ class AuthController {
 
   signUp(req: Request, res: Response) {
     const result = validationResult(req)
-    console.log(req.body)
+    //console.log(req.body)
     if (!result.isEmpty()) {
       return res.status(422).json({ errors: result.array() })
     }
@@ -46,7 +45,7 @@ class AuthController {
 
   signIn(req: Request, res: Response) {
     const result = validationResult(req)
-    console.log(req.body)
+    //console.log('signIn', req.body)
     if (!result.isEmpty()) {
       return res.status(422).json({ errors: result.array() })
     }
@@ -66,7 +65,7 @@ class AuthController {
 
   verify(req: Request, res: Response) {
     const result = validationResult(req)
-    console.log(req.body)
+    //console.log('verify', req.body)
     if (!result.isEmpty()) {
       return res.status(422).json({ errors: result.array() })
     }
@@ -88,10 +87,11 @@ class AuthController {
     switch (type) {
       case 'signUp':
         return [
-          body('username').notEmpty().isLength({ min: 6 }),
+          body('username').notEmpty().isLength({min: 5}),
           body('email').notEmpty().normalizeEmail().isEmail(),
-          body('password').notEmpty().isLength({ min: 8 }),
+          body('password').isString().isLength({ min: 8}),
           body('birthdate').exists().isISO8601(),
+          //body('gender').notEmpty().isString(),
           body('name').notEmpty().isString(),
           body('family_name').notEmpty().isString()
         ]
