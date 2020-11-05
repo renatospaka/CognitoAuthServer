@@ -1,0 +1,10 @@
+# signin - valid
+POST http://localhost:3033/auth/signin
+Content-Type: application/json
+
+{
+  "username": "dspwavaw", 
+  "password": "Zaq1!Xsw2@"
+}
+
+###

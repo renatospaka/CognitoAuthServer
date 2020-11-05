@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk'
+//import { CognitoIdentityServiceProvider, Config } from 'aws-sdk'
 import crypto from 'crypto'
 
 require('dotenv').config()
@@ -25,10 +26,8 @@ class CognitoService {
     }
     try {
       const data = await this.cognitoIdentity.signUp(params).promise()
-      //console.log('Deu certo!', data)
       return true
     } catch(error) {
-      //console.log('Deu bosta...', error)
       return false
     }
   }
@@ -62,10 +61,8 @@ class CognitoService {
     }
     try {
       let data = await this.cognitoIdentity.initiateAuth(params).promise()
-      console.log('Deu certo!', data)
       return true
     } catch(error) {
-      console.log('Deu bosta...', error)
       return false
     }
   }

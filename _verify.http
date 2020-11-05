@@ -1,0 +1,10 @@
+# verify new user
+POST http://localhost:3033/auth/verify
+Content-Type: application/json
+
+{
+    "username":"dspwavaw",
+    "code": "830715"
+}
+
+### 

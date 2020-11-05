@@ -1,0 +1,14 @@
+# signup
+POST http://localhost:3033/auth/signup
+Content-Type: application/json
+
+{
+  "username": "dspwavaw",
+  "password": "Zaq1!Xsw2@", 
+  "email": "wavawix152@fw025.com", 
+  "name": "dspwavaw", 
+  "family_name": "ix152", 
+  "birthdate": "1991-04-02"
+}
+
+###
